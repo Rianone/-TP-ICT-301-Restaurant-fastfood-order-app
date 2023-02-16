@@ -18,13 +18,15 @@ import Constants from "expo-constants";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { popularFoods } from "../constants";
 
-export default function Search() {
+export default function Search({ navigation, route }) {
 	const [search, setSearch] = useState("");
+	const [filteredList, setFilteredList] = useState(popularFoods)
+	var itemName;
 
 	return (
 		<View
 			style={{
-				...tw`flex pt-2 h-full pb-40`,
+				...tw`flex pt-2 h-full`,
 				marginTop: Constants.statusBarHeight,
 			}}
 		>
@@ -41,38 +43,107 @@ export default function Search() {
 					/>
 					<TextInput
 						style={tw`ml-3`}
-						placeholder="Restaurants and Cuisines"
-						onChangeText={(e) => setSearch(e)}
-						value={search}
+						placeholder="Research for menu item"
+						value = {search}
+						onChange={(e) => {
+							var filter = popularFoods.filter((item) => {
+							   return item.name.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
+							})
+							setFilteredList(filter)
+							setSearch(e.target.value)
+						}}
 					/>
 				</View>
 			</View>
 
 			<View style={tw`mx-5 mt-8 pb-3`}>
 				<BoltSemiBoldText style={tw`text-sm`}>
-					Popular Categories
+					All Menus
 				</BoltSemiBoldText>
 			</View>
 
-			<View style={tw`pb-20`}>
+			<ScrollView style={tw`pb-5`}>
 				<FlatList
 					style={tw`mx-5`}
-					data={popularFoods}
+					data={filteredList}
 					renderItem={({ item, index }) => (
-						<TouchableOpacity key={index}>
-							<BoltLightText
-								style={tw`text-sm my-4 text-gray-700 ${
-									index === 0 && "mt-7"
-								}`}
-							>
-								{item}
-							</BoltLightText>
+						<TouchableOpacity
+							style={tw.style(
+								"flex flex-row justify-between items-center w-full border-b border-gray-200",
+								{
+									"py-4": !!item.image,
+									"opacity-50":
+										!!item.isUnavailable,
+								}
+							)}
+							key={index}
+							disabled={item.isUnavailable}
+							onPress={() => {
+								itemName = item.name
+								navigation.navigate("Restaurant", {
+									screen: "PassOrder",
+									params: {
+										itemName,
+									},
+								})
+							
+							}}
+						>
+							<View style={tw`w-3/5 pr-5`}>
+								<View
+									key={item.id}
+									style={tw`w-full py-5 flex flex-col items-start`}
+								>
+									<BoltSemiBoldText
+										style={tw`text-lg`}
+									>
+										{item.name}
+									</BoltSemiBoldText>
+
+									{item.description && (
+										<BoltLightText
+											style={tw`my-2`}
+										>
+											{item.description}
+										</BoltLightText>
+									)}
+
+									<View
+										style={tw`flex flex-row items-center`}
+									>
+										<BoltLightText
+											style={tw.style(
+												item.discount && {
+													textDecorationLine:
+														"line-through",
+													textDecorationStyle:
+														"solid",
+												}
+											)}
+										>
+											{item.price + " "}FCFA
+										</BoltLightText>
+										{item.discount && (
+											<View
+												style={tw`ml-2 bg-red-500 px-2 rounded-full py-0.5`}
+											>
+												<BoltSemiBoldText
+													style={tw`text-white`}
+												>
+													FCFA
+													{item.discount}
+												</BoltSemiBoldText>
+											</View>
+										)}
+									</View>
+								</View>
+							</View>
 						</TouchableOpacity>
 					)}
-					keyExtractor={(item) => item}
+					keyExtractor={(item) => item.id}
 					showsVerticalScrollIndicator={false}
 				/>
-			</View>
+			</ScrollView>
 		</View>
 	);
 }

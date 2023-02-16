@@ -33,10 +33,10 @@ export default function Profile() {
 			<StatusBar style="auto" />
 			<View style={tw`flex flex-col mx-5 mt-5`}>
 				<BoltSemiBoldText style={tw`text-2xl`}>
-					Joshua Akangah
+					John Doe
 				</BoltSemiBoldText>
 				<BoltLightText style={tw`text-gray-500`}>
-					+234 809 809 809
+					+237 695 75 58 54
 				</BoltLightText>
 			</View>
 

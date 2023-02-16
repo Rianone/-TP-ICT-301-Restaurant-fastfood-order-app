@@ -40,6 +40,7 @@ const RestaurantScreen = ({ navigation, route }) => {
 				: 0 - Constants.statusBarHeight * 3
 		)
 	).current;
+	var itemName;
 
 	useEffect(() => {
 		if (toggleBar) {
@@ -110,7 +111,7 @@ const RestaurantScreen = ({ navigation, route }) => {
 							{name}
 						</BoltSemiBoldText>
 
-						<Ionicons name="ios-search" size={24} color="black" />
+						<Ionicons size={24} color="black" />
 					</View>
 
 					<FlatList
@@ -317,7 +318,12 @@ const RestaurantScreen = ({ navigation, route }) => {
 										)}
 										key={index}
 										disabled={item.isUnavailable}
-										onPress={()=>{console.log("Hello world");}}
+										onPress={() => {
+											itemName = item.name
+											navigation.navigate("PassOrder", {
+												itemName,
+											})
+										}}
 									>
 										<View style={tw`w-3/5 pr-5`}>
 											<View

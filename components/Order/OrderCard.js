@@ -34,11 +34,22 @@ export default function OrderCard({ data }) {
 
 			<View style={tw`flex-col items-center flex`}>
 				<View style={tw`my-auto`}>
-					<BoltLightText style={tw`text-sm text-gray-500`}>
+					{status == "Cancelled" ? <BoltLightText style={tw.style(
+						`text-sm text-red-500`, 
+						{
+							 textDecoration: "line-through"
+						 }
+					)}>
 						{status}
-					</BoltLightText>
+					</BoltLightText> :
+						(status == "Delivered" ? <BoltLightText style={tw`text-sm text-green-500`}>
+						{status}
+						</BoltLightText> : <BoltLightText style={tw`text-sm text-gray-500`}>
+							{status}
+						</BoltLightText>)
+					}
 					<BoltLightText style={tw`text-black mt-1.5`}>
-						GH₵{price}
+						FCFA {price}
 					</BoltLightText>
 				</View>
 			</View>

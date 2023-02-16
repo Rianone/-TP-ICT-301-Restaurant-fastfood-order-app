@@ -8,6 +8,7 @@ import Home from "../screens/Home";
 import RestaurantScreen from "../screens/Restaurant";
 import RestaurantInfo from "../screens/RestaurantInfo";
 import Profile from "../screens/Profile";
+import PassOrder from "../screens/PassOrder";
 
 const RestaurantStack = createStackNavigator();
 
@@ -22,6 +23,11 @@ const RestaurantStackScreen = () => {
 			<RestaurantStack.Screen
 				name="RestaurantInfo"
 				component={RestaurantInfo}
+				options={{ headerShown: false }}
+			/>
+			<RestaurantStack.Screen
+				name="PassOrder"
+				component={PassOrder}
 				options={{ headerShown: false }}
 			/>
 		</RestaurantStack.Navigator>
